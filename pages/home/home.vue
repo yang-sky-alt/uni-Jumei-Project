@@ -63,16 +63,16 @@ export default {
   },
   methods: {
     async getSwiperList() {
-      const { data: res } = await uni.$http.get('/api/public/v1/home/swiperdata')
+      const { data: result } = await uni.$http.get('/api/public/v1/home/swiperdata')
       // 请求失败
-      if (res.meta.status !== 200) return uni.$showMsg()
+      if (result.meta.status !== 200) return uni.$showMsg()
 
-      this.swiperList = res.message
+      this.swiperList = result.message
     },
     async getNavList() {
-      const { data: res } = await uni.$http.get('/api/public/v1/home/catitems')
-      if (res.meta.status !== 200) return uni.$showMsg()
-      this.navList = res.message
+      const { data: result } = await uni.$http.get('/api/public/v1/home/catitems')
+      if (result.meta.status !== 200) return uni.$showMsg()
+      this.navList = result.message
     },
     navClickHandler(item) {
       if (item.name === '分类') {
@@ -83,16 +83,16 @@ export default {
     },
     // 获取首页楼层数据的方法
     async getFloorList() {
-      const { data: res } = await uni.$http.get('/api/public/v1/home/floordata')
-      if (res.meta.status !== 200) return uni.$showMsg()
+      const { data: result } = await uni.$http.get('/api/public/v1/home/floordata')
+      if (result.meta.status !== 200) return uni.$showMsg()
 
       // 对数据进行处理
-      res.message.forEach(floor => {
+      result.message.forEach(floor => {
         floor.product_list.forEach(prod => {
           prod.url = '/subpkg/goods_list/goods_list?' + prod.navigator_url.split('?')[1]
         })
       })
-      this.floorList = res.message
+      this.floorList = result.message
     }
   }
 }
