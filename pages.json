@@ -27,18 +27,23 @@
         },
         {
           "path": "goods_list/goods_list",
-          "style": {}
+          "style": {
+            // 配置上拉触底的距离
+            "onReachBottomDistance": 150,
+            // 开启下拉刷新的效果
+            "enablePullDownRefresh": true,
+            // 配置窗口的背景颜色
+            "backgroundColor": "#F8F8F8"
+          }
+        },
+        {
+          "path": "search_page/search_page",
+          "style": {
+            "navigationBarTitleText": "",
+            "enablePullDownRefresh": false
+          }
         }
-          ,{
-                    "path" : "search_page/search_page",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
+      ]
     }
   ],
   "globalStyle": {
@@ -79,7 +84,7 @@
       }
     ]
   },
-  "condition" : { //模式配置，仅开发期间生效
+  "condition": { //模式配置，仅开发期间生效
     "current": 0, //当前激活的模式(list 的索引项)
     "list": [
       {
