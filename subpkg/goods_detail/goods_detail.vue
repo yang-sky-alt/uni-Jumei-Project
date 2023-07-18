@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations, mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -53,7 +54,7 @@ export default {
       }, {
         icon: 'cart',
         text: '购物车',
-        info: 2
+        info: 0
       }],
       // 右侧按钮组的配置对象
       buttonGroup: [{
@@ -74,6 +75,8 @@ export default {
     this.getGoodsDetail(goods_id)
   },
   methods: {
+    // 把m_cart模块中的addToCart方法映射到当前页面中使用
+    ...mapMutations('m_cart', ['addToCart']),
     async getGoodsDetail(goods_id) {
       const { data: result } = await uni.$http.get('/api/public/v1/goods/detail', { goods_id })
       if (result.meta.status !== 200) return uni.$showMsg()
@@ -99,6 +102,46 @@ export default {
           url: '/pages/cart/cart'
         })
       }
+    },
+    // 点击加入购物车
+    buttonClick(e) {
+      // 判断是否点击了加入购物车按钮
+      if (e.content.text === '加入购物车') {
+        // 组织一个商品的信息对象
+        const goods = {
+          goods_id: this.goods_info.goods_id, //商品Id
+          goods_name: this.goods_info.goods_name,   // 商品的名称
+          goods_price: this.goods_info.goods_price, // 商品的价格
+          goods_count: 1,                           // 商品的数量
+          goods_small_logo: this.goods_info.goods_small_logo, // 商品的图片
+          goods_state: true                         // 商品的勾选状态
+        }
+        // 通过this调用映射过来的addToCart方法,把商品信息对象存储到购物车中
+        this.addToCart(goods)
+      }
+    }
+  },
+  computed: {
+    // 调用 mapState 方法，把 m_cart 模块中的 cart 数组映射到当前页面中，作为计算属性来使用
+    // ...mapState('模块的名称', ['要映射的数据名称1', '要映射的数据名称2'])
+    ...mapState('m_cart', []),
+    // 把 m_cart 模块中名称为 total 的 getter 映射到当前页面中使用
+    ...mapGetters('m_cart', ['total']),
+  },
+  watch: {
+    // 监听total 值的变化 通过第一个形参得到变化后的新值
+    // 定义 total 侦听器，指向一个配置对象
+    total: {
+      handler(newval) {
+        // 通过数组的find()方法 找到购物车按钮的配置对象
+        const findResult = this.options.find((item) => item.text === '购物车')
+        if (findResult) {
+          // 动态为购物车按钮info属性赋值
+          findResult.info = newval
+        }
+      },
+      // immediate 属性用来声明此侦听器，是否在页面初次加载完毕后立即调用
+      immediate: true
     }
   }
 }

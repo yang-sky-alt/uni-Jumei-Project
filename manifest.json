@@ -52,11 +52,17 @@
         /* 小程序特有相关 */
         "appid": "wx724ab3b2d402e5b8",
         "setting": {
-            "urlCheck": false,
+            "urlCheck": false
             // 取消小程序警告
-            "checkSiteMap": false
+            // "checkSiteMap": false
         },
-        "usingComponents": true
+        "usingComponents": true,
+        "requiredPrivateInfos": [
+            "getLocation",
+            "onLocationChange",
+            "startLocationUpdateBackground",
+            "chooseAddress"
+        ]
     },
     "vueVersion": "2"
 }
