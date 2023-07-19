@@ -1,10 +1,12 @@
 <template>
-  <view>
-    <h3>我的</h3>
+  <view class="my-container">
+    <my-login v-if="!userinfo"></my-login>
+    <my-userinfo v-else></my-userinfo>
   </view>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 // 导入自己封装的 mixin 模块
 import badgeMix from '@/mixins/tabbar-badge.js'
 export default {
@@ -17,8 +19,16 @@ export default {
   },
   methods: {
 
+  },
+  computed: {
+    ...mapState('m_user', ['userinfo'])
   }
 }
 </script>
 
-<style></style>
+<style>
+page,
+.my-container {
+  height: 100%;
+}
+</style>
